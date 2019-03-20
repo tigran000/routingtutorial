@@ -1,28 +1,43 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react"
+
+const Home = () => <h1> Home page</h1>
+
+const About = () => <h1> About</h1>
+
+const Contact = () => <h1>Contact</h1>
 
 class App extends Component {
+  state = {
+    location: window.location
+  }
   render() {
+    const { pathname } = this.state.location
+    let Child
+    switch (pathname) {
+      case "/about":
+        Child = About
+        break
+      case "/home":
+        Child = Contact
+        break
+      default:
+        Child = Home
+    }
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+      <>
+        <nav>
+          <ul>
+            <li>
+              <a href="/about">About</a>
+            </li>
+            <li>
+              <a href="/home">Home</a>
+            </li>
+          </ul>
+        </nav>
+        <Child />
+      </>
+    )
   }
 }
-
-export default App;
+export default App
