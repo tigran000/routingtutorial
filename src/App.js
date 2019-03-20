@@ -18,6 +18,9 @@ class App extends Component {
         Child = About
         break
       case "/home":
+        Child = Home
+        break
+      case "/contact":
         Child = Contact
         break
       default:
@@ -32,6 +35,9 @@ class App extends Component {
             </li>
             <li>
               <a href="/home">Home</a>
+            </li>
+            <li>
+              <a href="/contact">Contact</a>
             </li>
           </ul>
         </nav>
