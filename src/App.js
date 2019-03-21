@@ -12,15 +12,51 @@ class Router extends Component {
   state = {
     location: window.location
   }
+  handlePopState = () => {
+    this.setState({ location: window.location })
+  }
+
+  push = url => {
+    window.history.pushState(null, null, url)
+    this.setState({ location: window.location })
+  }
+
+  componentDidMount() {
+    window.addEventListener("popstate", this.handlePopState)
+  }
+  componentWillUnmount() {
+    window.removeEventListener("popstate", this.handlePopState)
+  }
   render() {
     const { location } = this.state
-    return <RoutingContext.Provider {...this.props} value={{ location }} />
+    console.log(location.pathname)
+    return (
+      <RoutingContext.Provider
+        {...this.props}
+        value={{ location, push: this.push }}
+      />
+    )
   }
 }
 
 const Route = ({ path, component: Component }) => (
   <RoutingContext.Consumer>
     {({ location }) => (location.pathname === path ? <Component /> : null)}
+  </RoutingContext.Consumer>
+)
+const Link = ({ to, children }) => (
+  <RoutingContext.Consumer>
+    {({ push }) => (
+      <a
+        href={to}
+        onClick={event => {
+          event.preventDefault()
+          push(to)
+        }}
+      >
+        {children}
+      </a>
+    )}
   </RoutingContext.Consumer>
 )
 
@@ -32,13 +68,13 @@ class App extends Component {
           <nav>
             <ul>
               <li>
-                <a href="/about">About</a>
+                <Link to="/about">About </Link>
               </li>
               <li>
-                <a href="/home">Home</a>
+                <Link to="/home">Home </Link>
               </li>
               <li>
-                <a href="/contact">Contact</a>
+                <Link to="/contact">Contact </Link>
               </li>
             </ul>
           </nav>
